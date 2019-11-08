@@ -1,34 +1,23 @@
 ---
 - name: deployment of package in remote server
- hosts: web
- become: yes  
- tasks:
- - name: stop the apache
-   service:
-     name: httpd
-     state: stopped
+  hosts: web
+  become: yes  
+  tasks:
+  - name: stop the apache
+    service:
+      name: httpd
+      state: stopped
+  - name: Download Artifactory
+    get_url:
+      url: https://weblayer-static.s3.amazonaws.com/weblayer-$buildnumber.zip
+      dest: /tmp/weblayer-$buildnumber.zip
 
- - name: Install zip
-   yum:
-     name: zip
-     state: present
-
- - name: Install unzip
-   yum:
-     name: unzip
-     state: present
-
- - name: Download Artifactory
-   get_url:
-     url: https://weblayer-static.s3.amazonaws.com/weblayer-$buildnumber.zip
-     dest: /tmp/weblayer-$buildnumber.zip
-
- - name: unzip the file in remote server
-   unarchive:
-     src: /tmp/weblayer-$buildnumber.zip
-     dest: /var/www/html/
-     remote_src: yes
- - name: start the apache
-   service:
-     name: httpd
-     state: started
+  - name: unzip the file in remote server
+    unarchive:
+      src: /tmp/weblayer-$buildnumber.zip
+      dest: /var/www/html/
+      remote_src: yes
+  - name: start the apache
+    service:
+      name: httpd
+      state: started
