@@ -9,12 +9,12 @@
       state: stopped
   - name: Download Artifactory
     get_url:
-      url: https://weblayer-static.s3.amazonaws.com/weblayer-$buildnumber.zip
-      dest: /tmp/weblayer-$buildnumber.zip
+      url: https://weblayer-static.s3.amazonaws.com/weblayer.zip
+      dest: /tmp/weblayer.zip
 
   - name: unzip the file in remote server
     unarchive:
-      src: /tmp/weblayer-$buildnumber.zip
+      src: /tmp/weblayer.zip
       dest: /var/www/html/
       remote_src: yes
   - name: start the apache
